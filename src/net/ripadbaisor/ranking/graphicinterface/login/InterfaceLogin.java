@@ -24,18 +24,18 @@ public class InterfaceLogin extends JFrame {
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
-        JPanel panelInicial = createInitialPanel();
+        JPanel initialPanel = createInitialPanel();
 
-        JPanel panelLoginCliente = createLoginPanel("ClienteLogin");
+        JPanel clientLoginPanel = createLoginPanel("ClientLogin");
 
-        JPanel panelLoginAdministrador = createLoginPanel("Administrador");
+        JPanel adminLoginPanel = createLoginPanel("Admin");
 
-        JPanel panelRegistroCliente = createRegisterPanel();
+        JPanel clientRegisterPanel = createRegisterPanel();
 
-        cardPanel.add(panelInicial, "Inicio");
-        cardPanel.add(panelLoginCliente, "ClienteLogin");
-        cardPanel.add(panelLoginAdministrador, "Administrador");
-        cardPanel.add(panelRegistroCliente, "ClienteRegister");
+        cardPanel.add(initialPanel, "Inicio");
+        cardPanel.add(clientLoginPanel, "ClientLogin");
+        cardPanel.add(adminLoginPanel, "Admin");
+        cardPanel.add(clientRegisterPanel, "ClientRegister");
 
         add(cardPanel, BorderLayout.CENTER);
 
@@ -43,8 +43,43 @@ public class InterfaceLogin extends JFrame {
     }
 
     private JPanel createInitialPanel() {
+        
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.DARK_GRAY);
+        panel.setLayout(new GridBagLayout());
 
-        return new JPanel();
+        JButton btnClient = new JButton("Cliente");
+        JButton btnAdmin = new JButton("Administrador");
+
+        btnClient.setPreferredSize(new Dimension(150, 70));
+        btnAdmin.setPreferredSize(new Dimension(150, 70));
+
+        btnClient.setBackground(new Color(111, 54, 154));
+        btnAdmin.setBackground(new Color(111, 54, 154));
+        btnClient.setForeground(Color.WHITE);
+        btnAdmin.setForeground(Color.WHITE);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        panel.add(btnClient, gbc);
+        gbc.gridx = 0;
+        panel.add(btnAdmin, gbc);
+
+        btnClient.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setTitle("login de cliente");
+                cardLayout.show(cardPanel, "ClientLogin");
+            }
+        });
+
+        btnAdmin.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setTitle("login de administrador");
+                cardLayout.show(cardPanel, "Admin");
+            }
+        });
+
+        return panel;
     }
 
     private JPanel createLoginPanel(String tipo) {
