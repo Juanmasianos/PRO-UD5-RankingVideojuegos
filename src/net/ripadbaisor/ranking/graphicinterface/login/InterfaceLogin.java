@@ -286,7 +286,142 @@ public class InterfaceLogin extends JFrame {
 
     private JPanel createRegisterPanel() {
 
-        return new JPanel();
+        JPanel registerPanel = new JPanel();
+        registerPanel.setLayout(new GridBagLayout());
+
+        registerPanel.setBackground(Color.DARK_GRAY);
+
+        JLabel labelUser = new JLabel("Usuario:");
+        JTextField textUser = new JTextField();
+        JLabel labelPassword = new JLabel("Contraseña:");
+        JPasswordField textPassword = new JPasswordField();
+        JButton btnRegistrar = new JButton("<html>Registar<br/> usuario</html>");
+        JButton btnReturn = new JButton("Regresar");
+        JLabel errorLabel = new JLabel("Error al registrar el usuario, algún campo esta mal");
+        JLabel errorLabelTwo = new JLabel("Error al registrar el usuario, el usuario ya existe");
+
+        labelUser.setForeground(Color.WHITE);
+        labelPassword.setForeground(Color.WHITE);
+        textUser.setPreferredSize(new Dimension(180, 30));
+        textPassword.setPreferredSize(new Dimension(180, 30));
+        btnRegistrar.setPreferredSize(new Dimension(120, 50));
+        btnRegistrar.setBackground(new Color(111, 54, 154));
+        btnRegistrar.setForeground(Color.WHITE);
+        btnReturn.setPreferredSize(new Dimension(120, 50));
+        btnReturn.setBackground(new Color(111, 54, 154));
+        btnReturn.setForeground(Color.WHITE);
+        errorLabel.setForeground(Color.RED);
+        errorLabel.setVisible(false);
+        errorLabelTwo.setForeground(Color.RED);
+        errorLabelTwo.setVisible(false);
+
+        JLabel labelRegister;
+        labelRegister = new JLabel("Registro de cliente");
+        JButton btnLogin = new JButton("Log in");
+        btnLogin.setPreferredSize(new Dimension(120, 50));
+        btnLogin.setBackground(new Color(111, 54, 154));
+        btnLogin.setForeground(Color.WHITE);
+
+        labelRegister.setForeground(Color.WHITE);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        registerPanel.add(labelRegister, gbc);
+        gbc.insets = new Insets(10, 10, 10, -100);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        registerPanel.add(labelUser, gbc);
+        gbc.insets = new Insets(10, -100, 10, 10);
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        registerPanel.add(textUser, gbc);
+        gbc.insets = new Insets(10, 10, 10, -100);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        registerPanel.add(labelPassword, gbc);
+        gbc.insets = new Insets(10, -100, 10, 10);
+        gbc.gridx = 2;
+        gbc.gridy = 2;
+        registerPanel.add(textPassword, gbc);
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        registerPanel.add(btnLogin, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        registerPanel.add(btnRegistrar, gbc);
+        gbc.gridx = 2;
+        gbc.gridy = 3;
+        registerPanel.add(btnReturn, gbc);
+        gbc.insets = new Insets(10, -100, 10, -100);
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        registerPanel.add(errorLabel, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        registerPanel.add(errorLabelTwo, gbc);
+
+        btnReturn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                errorLabel.setVisible(false);
+                setTitle("Interfaz de Login");
+                cardLayout.show(cardPanel, "Inicio");
+            }
+        });
+
+        btnLogin.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                errorLabel.setVisible(false);
+                setTitle("login de cliente");
+                cardLayout.show(cardPanel, "ClientLogin");
+            }
+        });
+
+        btnRegistrar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                String user = textUser.getText();
+                String password = new String(textPassword.getPassword());
+
+                textUser.setText("");
+                textPassword.setText("");
+
+                if (user.isEmpty() || password.isEmpty()) {
+
+                    errorLabel.setVisible(true);
+
+                } else {
+
+                    boolean isAlreadyRegistered = false;
+
+                    for (int i = 0; i < credentialsList.size(); i++) {
+                        if (user.equals(credentialsList.get(i).getUsername())
+                                && password.equals(credentialsList.get(i).getPassword())) {
+
+                            isAlreadyRegistered = true;
+
+                            errorLabelTwo.setVisible(true);
+
+                        }
+                    }
+
+                    if (!isAlreadyRegistered) {
+
+                        credentialsList.add(new Credentials(user, password));
+
+                        errorLabel.setVisible(false);
+
+                    }
+
+                    errorLabel.setVisible(false);
+                }
+
+            }
+        });
+
+        return registerPanel;
     }
     
 
