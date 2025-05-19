@@ -1,5 +1,13 @@
+import java.util.ArrayList;
+
+import net.ripadbaisor.ranking.graphicinterface.login.InterfaceLogin;
+import net.ripadbaisor.ranking.programdata.DataStore;
+import net.ripadbaisor.ranking.userAccounts.Credentials;
+
 public class App {
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
+        DataStore defaultDataStore = new DataStore();
+        defaultDataStore.addCredential(new Credentials("Admin", "1234"));
+        new InterfaceLogin(defaultDataStore);
     }
 }

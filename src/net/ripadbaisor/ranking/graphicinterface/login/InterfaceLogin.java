@@ -5,17 +5,18 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
+import net.ripadbaisor.ranking.programdata.DataStore;
 import net.ripadbaisor.ranking.userAccounts.Credentials;
 
 public class InterfaceLogin extends JFrame {
 
     private CardLayout cardLayout;
     private JPanel cardPanel;
-    private ArrayList<Credentials> credentialsList;
+    private DataStore dataStore;
 
-    public InterfaceLogin(ArrayList<Credentials> credentials) {
+    public InterfaceLogin(DataStore dataStore) {
 
-        this.credentialsList = credentials;
+        this.dataStore = dataStore;
 
         setTitle("Interfaz de Login");
         setSize(600, 400);
@@ -227,8 +228,8 @@ public class InterfaceLogin extends JFrame {
 
                     if (tipo.toLowerCase().equals("admin")) {
 
-                        if (user.equals(credentialsList.get(0).getUsername())
-                                && password.equals(credentialsList.get(0).getPassword())) {
+                        if (user.equals(dataStore.getCredentialsList().get(0).getUsername())
+                                && password.equals(dataStore.getCredentialsList().get(0).getPassword())) {
 
                             textUser.setText("");
                             textPassword.setText("");
@@ -245,12 +246,12 @@ public class InterfaceLogin extends JFrame {
 
                         boolean gotLooped = false;
 
-                        for (int i = 1; i < credentialsList.size(); i++) {
+                        for (int i = 1; i < dataStore.getCredentialsList().size(); i++) {
 
                             gotLooped = true;
 
-                            if (user.equals(credentialsList.get(i).getUsername())
-                                    && password.equals(credentialsList.get(i).getPassword())) {
+                            if (user.equals(dataStore.getCredentialsList().get(i).getUsername())
+                                    && password.equals(dataStore.getCredentialsList().get(i).getPassword())) {
 
                                 textUser.setText("");
                                 textPassword.setText("");
@@ -396,9 +397,9 @@ public class InterfaceLogin extends JFrame {
 
                     boolean isAlreadyRegistered = false;
 
-                    for (int i = 0; i < credentialsList.size(); i++) {
-                        if (user.equals(credentialsList.get(i).getUsername())
-                                && password.equals(credentialsList.get(i).getPassword())) {
+                    for (int i = 0; i < dataStore.getCredentialsList().size(); i++) {
+                        if (user.equals(dataStore.getCredentialsList().get(i).getUsername())
+                                && password.equals(dataStore.getCredentialsList().get(i).getPassword())) {
 
                             isAlreadyRegistered = true;
 
@@ -409,7 +410,7 @@ public class InterfaceLogin extends JFrame {
 
                     if (!isAlreadyRegistered) {
 
-                        credentialsList.add(new Credentials(user, password));
+                        dataStore.addCredential(new Credentials(user, password));
 
                         errorLabel.setVisible(false);
 
