@@ -6,7 +6,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 import net.ripadbaisor.ranking.programdata.DataStore;
-import net.ripadbaisor.ranking.userAccounts.Credentials;
+import net.ripadbaisor.ranking.programdata.userAccounts.Credentials;
 
 public class InterfaceLogin extends JFrame {
 
@@ -235,6 +235,8 @@ public class InterfaceLogin extends JFrame {
                             textPassword.setText("");
 
                             System.out.println("funciona");
+                            // new AdminInterface(dataStore);
+                            
 
                         } else {
 

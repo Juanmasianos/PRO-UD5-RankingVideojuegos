@@ -1,4 +1,4 @@
-package net.ripadbaisor.ranking.userAccounts;
+package net.ripadbaisor.ranking.programdata.userAccounts;
 
 public class Credentials {
     

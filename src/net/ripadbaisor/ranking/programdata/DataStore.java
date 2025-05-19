@@ -1,27 +1,29 @@
 package net.ripadbaisor.ranking.programdata;
 
 import java.util.ArrayList;
-import net.ripadbaisor.ranking.userAccounts.Credentials;
+
+import net.ripadbaisor.ranking.programdata.requests.Request;
+import net.ripadbaisor.ranking.programdata.userAccounts.Credentials;
 
 public class DataStore {
     private ArrayList<Credentials> credentialsList = new ArrayList<>();
-    private ArrayList<String> solicitudes = new ArrayList<>();
+    private ArrayList<Request> requests = new ArrayList<>();
     private ArrayList<String> puntuaciones = new ArrayList<>();
 
     public ArrayList<Credentials> getCredentialsList() {
         return credentialsList;
     }
 
-    public ArrayList<String> getSolicitudes() {
-        return solicitudes;
+    public ArrayList<Request> getRequests() {
+        return requests;
     }
 
     public ArrayList<String> getPuntuaciones() {
         return puntuaciones;
     }
 
-    public void addSolicitud(String solicitud) {
-        solicitudes.add(solicitud);
+    public void addSolicitud(Request request) {
+        this.requests.add(request);
     }
 
     public void addPuntuacion(String puntuacion) {
