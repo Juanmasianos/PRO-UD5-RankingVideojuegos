@@ -235,6 +235,7 @@ public class InterfaceLogin extends JFrame {
                             textUser.setText("");
                             textPassword.setText("");
 
+                            dispose();
                             new AdminInterface(dataStore);
                             
 

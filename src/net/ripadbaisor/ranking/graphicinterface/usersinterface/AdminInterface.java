@@ -31,13 +31,13 @@ public class AdminInterface extends JFrame {
 
         JPanel initialPanel = createInitialPanel();
 
-        //JPanel requestPanel = createRequestPanel("request");
+        JPanel requestPanel = createRequestPanel();
 
-        //JPanel videogameAdderPanel = createVideogameAdderPanel("VideogameAdder");
+        // JPanel videogameAdderPanel = createVideogameAdderPanel("VideogameAdder");
 
         cardPanel.add(initialPanel, "Inicio");
-        //cardPanel.add(requestPanel, "request");
-        //cardPanel.add(videogameAdderPanel, "videogameAdder");
+        cardPanel.add(requestPanel, "request");
+        // cardPanel.add(videogameAdderPanel, "videogameAdder");
 
         add(cardPanel, BorderLayout.CENTER);
 
@@ -85,10 +85,65 @@ public class AdminInterface extends JFrame {
         gbc.gridy = 1;
         panel.add(btnLogOut, gbc);
 
-
+        btnRequest.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setTitle("Ver Solicitudes");
+                cardLayout.show(cardPanel, "request");
+            }
+        });
 
         return panel;
 
+    }
+
+    private JPanel createRequestPanel() {
+
+        JPanel requestPanel = new JPanel();
+        requestPanel.setLayout(new GridBagLayout());
+        requestPanel.setBackground(Color.DARK_GRAY);
+        requestPanel.setLayout(new GridBagLayout());
+
+        JScrollPane requestScroll = new JScrollPane(requestPanel);
+        requestScroll.setBorder(BorderFactory.createTitledBorder("Sugerencias de usuarios"));
+
+        JButton btnReturn = new JButton("Regresar");
+        btnReturn.setPreferredSize(new Dimension(150, 70));
+        btnReturn.setBackground(new Color(111, 54, 154));
+        btnReturn.setForeground(Color.WHITE);
+
+        boolean gotLooped = false;
+
+        for (Request request : dataStore.getRequests()) {
+            gotLooped = true;
+            JLabel requestLabel = new JLabel(dataStore.toString() + "/n");
+        }
+
+        if (!gotLooped) {
+
+            JLabel noRequestLabel = new JLabel("No hay solicitudes para mostrar");
+            noRequestLabel.setForeground(Color.WHITE);
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.insets = new Insets(10, 10, 10, 10);
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            requestPanel.add(noRequestLabel, gbc);
+
+        }
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        requestPanel.add(btnReturn, gbc);
+
+        btnReturn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setTitle("Interfaz de Administrador");
+                cardLayout.show(cardPanel, "Inicio");
+            }
+        });
+
+        return requestPanel;
     }
 
 }
