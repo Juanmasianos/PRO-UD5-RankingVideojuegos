@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import net.ripadbaisor.ranking.graphicinterface.login.InterfaceLogin;
 import net.ripadbaisor.ranking.programdata.DataStore;
 import net.ripadbaisor.ranking.programdata.requests.Request;
 import net.ripadbaisor.ranking.programdata.userAccounts.Credentials;
@@ -89,61 +90,91 @@ public class AdminInterface extends JFrame {
             }
         });
 
+        btnLogOut.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                
+                dispose();
+
+                new InterfaceLogin(dataStore);
+
+            }
+        });
+
         return panel;
 
     }
 
     private JPanel createRequestPanel() {
-    JPanel containerPanel = new JPanel(new BorderLayout());
 
-    JPanel requestPanel = new JPanel(new GridBagLayout());
-    requestPanel.setBackground(Color.DARK_GRAY);
+        JPanel containerPanel = new JPanel(new BorderLayout());
+        containerPanel.setBackground(Color.GRAY);
 
-    GridBagConstraints gbc = new GridBagConstraints();
-    gbc.insets = new Insets(5, 5, 5, 5);
-    gbc.gridx = 0;
-    gbc.gridy = 0;
-    gbc.anchor = GridBagConstraints.WEST;
+        JPanel requestPanel = new JPanel(new GridBagLayout());
+        requestPanel.setBackground(Color.DARK_GRAY);
 
-    for (Request request : dataStore.getRequests()) {
-        JTextArea requestText = new JTextArea(request.toString());
-        requestText.setWrapStyleWord(true);
-        requestText.setLineWrap(true);
-        requestText.setEditable(false);
-        requestText.setBackground(new Color(50, 50, 50));
-        requestText.setForeground(Color.WHITE);
-        requestText.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        requestText.setPreferredSize(new Dimension(500, 70));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
 
-        requestPanel.add(requestText, gbc);
-        gbc.gridy++;
+        boolean gotLooped = false;
+
+        for (Request request : dataStore.getRequests()) {
+
+            gotLooped = true;
+
+            JTextArea requestText = new JTextArea(request.toString());
+            requestText.setWrapStyleWord(true);
+            requestText.setLineWrap(true);
+            requestText.setEditable(false);
+            requestText.setBackground(Color.DARK_GRAY);
+            requestText.setForeground(Color.WHITE);
+            requestText.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+            requestText.setPreferredSize(new Dimension(500, 50));
+
+            requestPanel.add(requestText, gbc);
+            gbc.gridy++;
+        }
+
+        if (!gotLooped) {
+            
+            JLabel noRequestsLabel = new JLabel("No hay solicitudes a mostrar");
+            noRequestsLabel.setForeground(Color.WHITE);
+            requestPanel.add(noRequestsLabel);
+
+        }
+
+        requestPanel.setPreferredSize(new Dimension(500, gbc.gridy * 80));
+
+        JScrollPane scrollPane = new JScrollPane(requestPanel);
+        scrollPane.setBackground(Color.DARK_GRAY);
+        scrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+
+        JButton btnReturn = new JButton("Regresar");
+        btnReturn.setPreferredSize(new Dimension(150, 50));
+        btnReturn.setBackground(new Color(111, 54, 154));
+        btnReturn.setForeground(Color.WHITE);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setBackground(Color.DARK_GRAY);
+        bottomPanel.add(btnReturn);
+
+        containerPanel.add(scrollPane, BorderLayout.CENTER);
+        containerPanel.add(bottomPanel, BorderLayout.SOUTH);
+
+        btnReturn.addActionListener(e -> {
+            setTitle("Interfaz de Administrador");
+            cardLayout.show(cardPanel, "Inicio");
+        });
+
+        return containerPanel;
     }
 
-    requestPanel.setPreferredSize(new Dimension(500, gbc.gridy * 80));
 
-    JScrollPane scrollPane = new JScrollPane(requestPanel);
-    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-    scrollPane.getVerticalScrollBar().setUnitIncrement(16); 
 
-    JButton btnReturn = new JButton("Regresar");
-    btnReturn.setPreferredSize(new Dimension(150, 50));
-    btnReturn.setBackground(new Color(111, 54, 154));
-    btnReturn.setForeground(Color.WHITE);
-
-    JPanel bottomPanel = new JPanel();
-    bottomPanel.setBackground(Color.DARK_GRAY);
-    bottomPanel.add(btnReturn);
-
-    containerPanel.add(scrollPane, BorderLayout.CENTER);
-    containerPanel.add(bottomPanel, BorderLayout.SOUTH);
-
-    btnReturn.addActionListener(e -> {
-        setTitle("Interfaz de Administrador");
-        cardLayout.show(cardPanel, "Inicio");
-    });
-
-    return containerPanel;
-}
 
 
 }
