@@ -12,6 +12,6 @@ public class App {
     public static void main(String[] args) throws Exception {
         DataStore defaultDataStore = new DataStore();
         defaultDataStore.addCredential(new Credentials("Admin", "1234"));
-        new AdminInterface(defaultDataStore);
+        new InterfaceLogin(defaultDataStore);
     }
 }
