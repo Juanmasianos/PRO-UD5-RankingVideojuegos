@@ -1,6 +1,9 @@
 package net.ripadbaisor.ranking.videogame;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.swing.text.DateFormatter;
 
 public class Videogame {
 
@@ -27,6 +30,14 @@ public class Videogame {
 
     public Date getLaunchDate() {
         return launchDate;
+    }
+
+    public String getLaunchDateFormatted() {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String dateFormated = dateFormat.format(launchDate);
+
+        return dateFormated;
     }
 
     public void setLaunchDate(Date launchDate) {

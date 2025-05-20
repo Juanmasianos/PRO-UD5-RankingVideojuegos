@@ -108,12 +108,12 @@ public class AdminInterface extends JFrame {
         btnEditVideogames.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                JPanel videogameEditorPanel = createVideogameEditorPanel();
+                JPanel videogameListPanel = createVideogameListPanel();
 
-                cardPanel.add(videogameEditorPanel, "videogameEditor");
+                cardPanel.add(videogameListPanel, "videogameLister");
 
-                setTitle("Editar Videojuego");
-                cardLayout.show(cardPanel, "videogameEditor");
+                setTitle("Lista de Videojuegos");
+                cardLayout.show(cardPanel, "videogameLister");
 
             }
         });
@@ -217,7 +217,8 @@ public class AdminInterface extends JFrame {
         JFormattedTextField textReleaseDate = new JFormattedTextField(dateFormatter);
         JButton btnAdd = new JButton("<html>Añadir<br/> Videojuego</html>");
         JButton btnReturn = new JButton("Regresar");
-        JLabel errorLabel = new JLabel("<html>Error al registrar el videojuego, la fecha no es correcta.<br /> No debe estar vacia y su formato es dd/mm/aaaa </html>");
+        JLabel errorLabel = new JLabel(
+                "<html>Error al registrar el videojuego, la fecha no es correcta.<br /> No debe estar vacia y su formato es dd/mm/aaaa </html>");
         JLabel errorLabelTwo = new JLabel("Error al registrar el videojuego, el videojuego ya existe");
 
         labelAddVideogame.setForeground(Color.WHITE);
@@ -338,15 +339,15 @@ public class AdminInterface extends JFrame {
         return adderPanel;
     }
 
-    private JPanel createVideogameEditorPanel() {
+    private JPanel createVideogameListPanel() {
 
         JPanel containerPanel = new JPanel(new BorderLayout());
         containerPanel.setBackground(Color.DARK_GRAY);
 
-        JPanel editorPanel = new JPanel();
-        editorPanel.setLayout(new GridBagLayout());
+        JPanel listPanel = new JPanel();
+        listPanel.setLayout(new GridBagLayout());
 
-        editorPanel.setBackground(Color.DARK_GRAY);
+        listPanel.setBackground(Color.DARK_GRAY);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -361,13 +362,23 @@ public class AdminInterface extends JFrame {
             gotLooped = true;
 
             JButton btnVideogame = new JButton(videogame.getName());
-            btnVideogame.setBackground(Color.DARK_GRAY);
+            btnVideogame.setBackground(new Color(111, 54, 154));
             btnVideogame.setForeground(Color.WHITE);
             btnVideogame.setBorder(BorderFactory.createLineBorder(Color.GRAY));
             btnVideogame.setPreferredSize(new Dimension(220, 50));
 
-            editorPanel.add(btnVideogame, gbc);
-            
+            btnVideogame.addActionListener(e -> {
+
+                JPanel videogameEditPanel = createVideogameEditPanel(videogame);
+
+                cardPanel.add(videogameEditPanel, "videogameEditor");
+
+                setTitle("Editor de juego");
+                cardLayout.show(cardPanel, "videogameEditor");
+            });
+
+            listPanel.add(btnVideogame, gbc);
+
             gbc.gridx++;
 
             if (gbc.gridx == 2) {
@@ -381,13 +392,13 @@ public class AdminInterface extends JFrame {
 
             JLabel noVideogamesLabel = new JLabel("No hay videojuegos a mostrar");
             noVideogamesLabel.setForeground(Color.WHITE);
-            editorPanel.add(noVideogamesLabel);
+            listPanel.add(noVideogamesLabel);
 
         }
 
-        editorPanel.setPreferredSize(new Dimension(500, gbc.gridy * 80));
+        listPanel.setPreferredSize(new Dimension(500, gbc.gridy * 80));
 
-        JScrollPane scrollPane = new JScrollPane(editorPanel);
+        JScrollPane scrollPane = new JScrollPane(listPanel);
         scrollPane.setBackground(Color.DARK_GRAY);
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -411,6 +422,198 @@ public class AdminInterface extends JFrame {
         });
 
         return containerPanel;
+    }
+
+    private JPanel createVideogameEditPanel(Videogame videogame) {
+
+        JPanel editorPanel = new JPanel();
+        editorPanel.setLayout(new GridBagLayout());
+
+        editorPanel.setBackground(Color.DARK_GRAY);
+
+        JLabel labelEditVideogame = new JLabel("<html>Editando: " + videogame.getName()
+                + "<br />Fecha de salida actual: " + videogame.getLaunchDateFormatted());
+        JLabel labelEditName = new JLabel("Nuevo Nombre:");
+        JTextField textEditName = new JTextField();
+        JLabel labelEditReleaseDate = new JLabel("Nueva Fecha de salida:");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormatter dateFormatter = new DateFormatter(dateFormat);
+        JFormattedTextField textEditReleaseDate = new JFormattedTextField(dateFormatter);
+        JButton btnEdit = new JButton("<html>Confirmar<br/> edición</html>");
+        JButton btnReturn = new JButton("Regresar");
+        JLabel errorLabel = new JLabel(
+                "<html>Error al registrar el videojuego, la fecha no es correcta.<br /> No debe estar vacia y su formato es dd/mm/aaaa </html>");
+        JLabel errorLabelTwo = new JLabel("Error al cambiar el nombre al videojuego, el nuevo nombre ya existe");
+        JLabel errorLabelThree = new JLabel("No pueden estar ambos campos vacios");
+
+        labelEditVideogame.setForeground(Color.WHITE);
+        labelEditName.setForeground(Color.WHITE);
+        labelEditReleaseDate.setForeground(Color.WHITE);
+        textEditName.setPreferredSize(new Dimension(180, 30));
+        textEditReleaseDate.setPreferredSize(new Dimension(180, 30));
+        btnEdit.setPreferredSize(new Dimension(120, 50));
+        btnEdit.setBackground(new Color(111, 54, 154));
+        btnEdit.setForeground(Color.WHITE);
+        btnReturn.setPreferredSize(new Dimension(120, 50));
+        btnReturn.setBackground(new Color(111, 54, 154));
+        btnReturn.setForeground(Color.WHITE);
+        errorLabel.setForeground(Color.RED);
+        errorLabel.setVisible(false);
+        errorLabelTwo.setForeground(Color.RED);
+        errorLabelTwo.setVisible(false);
+        errorLabelThree.setForeground(Color.RED);
+        errorLabelThree.setVisible(false);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        GridBagConstraints gbcTwo = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbcTwo.insets = new Insets(10, 10, 30, -180);
+        gbcTwo.gridx = 0;
+        gbcTwo.gridy = 0;
+        editorPanel.add(labelEditVideogame, gbcTwo);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        editorPanel.add(labelEditName, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        editorPanel.add(textEditName, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        editorPanel.add(labelEditReleaseDate, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        editorPanel.add(textEditReleaseDate, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        editorPanel.add(btnEdit, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        editorPanel.add(btnReturn, gbc);
+        gbc.insets = new Insets(10, -120, 10, 10);
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        editorPanel.add(errorLabel, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        editorPanel.add(errorLabelTwo, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        editorPanel.add(errorLabelThree, gbc);
+
+        btnReturn.addActionListener(e -> {
+
+            JPanel videogameListPanel = createVideogameListPanel();
+
+            cardPanel.add(videogameListPanel, "videogameLister");
+
+            setTitle("Interfaz de Administrador");
+            cardLayout.show(cardPanel, "videogameLister");
+
+        });
+
+        btnEdit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                errorLabel.setVisible(false);
+                errorLabelTwo.setVisible(false);
+                errorLabelThree.setVisible(false);
+                String name = "";
+                String releaseDateString = "";
+
+                try {
+
+                    name = textEditName.getText();
+                    releaseDateString = textEditReleaseDate.getText();
+
+                    textEditName.setText("");
+                    textEditReleaseDate.setText("");
+
+                    if (name.isEmpty() && releaseDateString.isEmpty()) {
+
+                        errorLabelThree.setVisible(true);
+
+                    } else if (name.isEmpty() || releaseDateString.isEmpty()) {
+
+                        boolean isNameEmpty = name.isEmpty();
+
+                        if (isNameEmpty) {
+
+                            Date releaseDate = (Date) textEditReleaseDate.getValue();
+
+                            videogame.setLaunchDate(releaseDate);
+
+                            errorLabel.setVisible(false);
+                            errorLabelTwo.setVisible(false);
+                            errorLabelThree.setVisible(false);
+
+                        } else {
+
+                            boolean isAlreadyAdded = false;
+
+                            for (int i = 0; i < dataStore.getVideogames().size(); i++) {
+                                if (name.equals(dataStore.getVideogames().get(i).getName())) {
+
+                                    isAlreadyAdded = true;
+
+                                    errorLabelTwo.setVisible(true);
+
+                                }
+                            }
+
+                            if (!isAlreadyAdded) {
+
+                                videogame.setName(name);
+
+                                errorLabel.setVisible(false);
+                                errorLabelTwo.setVisible(false);
+                                errorLabelThree.setVisible(false);
+
+                            }
+
+                        }
+
+                    } else {
+
+                        boolean isAlreadyAdded = false;
+
+                        Date releaseDate = (Date) textEditReleaseDate.getValue();
+
+                        for (int i = 0; i < dataStore.getVideogames().size(); i++) {
+                            if (name.equals(dataStore.getVideogames().get(i).getName())) {
+
+                                isAlreadyAdded = true;
+
+                                errorLabelTwo.setVisible(true);
+
+                            }
+                        }
+
+                        if (!isAlreadyAdded) {
+
+                            videogame.setName(name);
+                            videogame.setLaunchDate(releaseDate);
+
+                            errorLabel.setVisible(false);
+                            errorLabelTwo.setVisible(false);
+                            errorLabelThree.setVisible(false);
+
+                        }
+
+                    }
+
+                } catch (Exception excep) {
+
+                    errorLabel.setVisible(true);
+
+                    textEditName.setText("");
+                    textEditReleaseDate.setText("");
+
+                }
+
+            }
+        });
+
+        return editorPanel;
     }
 
 }
