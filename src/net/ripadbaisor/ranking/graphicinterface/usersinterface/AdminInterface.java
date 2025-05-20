@@ -33,12 +33,9 @@ public class AdminInterface extends JFrame {
 
         JPanel initialPanel = createInitialPanel();
 
-        JPanel requestPanel = createRequestPanel();
-
         JPanel videogameAdderPanel = createVideogameAdderPanel();
 
         cardPanel.add(initialPanel, "Inicio");
-        cardPanel.add(requestPanel, "request");
         cardPanel.add(videogameAdderPanel, "videogameAdder");
 
         add(cardPanel, BorderLayout.CENTER);
@@ -89,6 +86,11 @@ public class AdminInterface extends JFrame {
 
         btnRequest.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
+                JPanel requestPanel = createRequestPanel();
+
+                cardPanel.add(requestPanel, "request");
+
                 setTitle("Ver Solicitudes");
                 cardLayout.show(cardPanel, "request");
             }
@@ -99,6 +101,19 @@ public class AdminInterface extends JFrame {
 
                 setTitle("Añadir Videojuego");
                 cardLayout.show(cardPanel, "videogameAdder");
+
+            }
+        });
+
+        btnEditVideogames.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                JPanel videogameEditorPanel = createVideogameEditorPanel();
+
+                cardPanel.add(videogameEditorPanel, "videogameEditor");
+
+                setTitle("Editar Videojuego");
+                cardLayout.show(cardPanel, "videogameEditor");
 
             }
         });
@@ -321,6 +336,81 @@ public class AdminInterface extends JFrame {
         });
 
         return adderPanel;
+    }
+
+    private JPanel createVideogameEditorPanel() {
+
+        JPanel containerPanel = new JPanel(new BorderLayout());
+        containerPanel.setBackground(Color.DARK_GRAY);
+
+        JPanel editorPanel = new JPanel();
+        editorPanel.setLayout(new GridBagLayout());
+
+        editorPanel.setBackground(Color.DARK_GRAY);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+
+        boolean gotLooped = false;
+
+        for (Videogame videogame : dataStore.getVideogames()) {
+
+            gotLooped = true;
+
+            JButton btnVideogame = new JButton(videogame.getName());
+            btnVideogame.setBackground(Color.DARK_GRAY);
+            btnVideogame.setForeground(Color.WHITE);
+            btnVideogame.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+            btnVideogame.setPreferredSize(new Dimension(220, 50));
+
+            editorPanel.add(btnVideogame, gbc);
+            
+            gbc.gridx++;
+
+            if (gbc.gridx == 2) {
+                gbc.gridx = 0;
+                gbc.gridy++;
+            }
+
+        }
+
+        if (!gotLooped) {
+
+            JLabel noVideogamesLabel = new JLabel("No hay videojuegos a mostrar");
+            noVideogamesLabel.setForeground(Color.WHITE);
+            editorPanel.add(noVideogamesLabel);
+
+        }
+
+        editorPanel.setPreferredSize(new Dimension(500, gbc.gridy * 80));
+
+        JScrollPane scrollPane = new JScrollPane(editorPanel);
+        scrollPane.setBackground(Color.DARK_GRAY);
+        scrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+
+        JButton btnReturn = new JButton("Regresar");
+        btnReturn.setPreferredSize(new Dimension(150, 50));
+        btnReturn.setBackground(new Color(111, 54, 154));
+        btnReturn.setForeground(Color.WHITE);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setBackground(Color.DARK_GRAY);
+        bottomPanel.add(btnReturn);
+
+        containerPanel.add(scrollPane, BorderLayout.CENTER);
+        containerPanel.add(bottomPanel, BorderLayout.SOUTH);
+
+        btnReturn.addActionListener(e -> {
+            setTitle("Interfaz de Administrador");
+            cardLayout.show(cardPanel, "Inicio");
+        });
+
+        return containerPanel;
     }
 
 }

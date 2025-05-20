@@ -23,7 +23,7 @@ public class DataStore {
         return videogames;
     }
 
-    public void addSolicitud(Request request) {
+    public void addRequest(Request request) {
         this.requests.add(request);
     }
 
