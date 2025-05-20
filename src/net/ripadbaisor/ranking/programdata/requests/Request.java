@@ -1,25 +1,25 @@
 package net.ripadbaisor.ranking.programdata.requests;
 
 public class Request {
-    private String nombrePropuesto;
-    private String autor;
+    private String request;
+    private String author;
 
-    public Request(String autor, String nombrePropuesto) {
-        this.autor = autor;
-        this.nombrePropuesto = nombrePropuesto;
+    public Request(String author, String request) {
+        this.author = author;
+        this.request = request;
     }
 
-    public String getNombrePropuesto() {
-        return nombrePropuesto;
+    public String getRequest() {
+        return request;
     }
 
-    public String getAutor() {
-        return autor;
+    public String getAuthor() {
+        return author;
     }
 
     @Override
     public String toString() {
-        return autor + " sugiere: " + nombrePropuesto;
+        return author + " sugiere: " + request;
     }
 }
 

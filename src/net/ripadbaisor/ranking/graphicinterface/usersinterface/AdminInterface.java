@@ -9,9 +9,6 @@ import net.ripadbaisor.ranking.programdata.requests.Request;
 import net.ripadbaisor.ranking.programdata.userAccounts.Credentials;
 import net.ripadbaisor.ranking.videogame.Videogame;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class AdminInterface extends JFrame {
 
     private CardLayout cardLayout;
@@ -97,53 +94,56 @@ public class AdminInterface extends JFrame {
     }
 
     private JPanel createRequestPanel() {
+    JPanel containerPanel = new JPanel(new BorderLayout());
 
-        JPanel requestPanel = new JPanel();
-        requestPanel.setLayout(new GridBagLayout());
-        requestPanel.setBackground(Color.DARK_GRAY);
-        requestPanel.setLayout(new GridBagLayout());
+    JPanel requestPanel = new JPanel(new GridBagLayout());
+    requestPanel.setBackground(Color.DARK_GRAY);
 
-        JScrollPane requestScroll = new JScrollPane(requestPanel);
-        requestScroll.setBorder(BorderFactory.createTitledBorder("Sugerencias de usuarios"));
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.insets = new Insets(5, 5, 5, 5);
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.anchor = GridBagConstraints.WEST;
 
-        JButton btnReturn = new JButton("Regresar");
-        btnReturn.setPreferredSize(new Dimension(150, 70));
-        btnReturn.setBackground(new Color(111, 54, 154));
-        btnReturn.setForeground(Color.WHITE);
+    for (Request request : dataStore.getRequests()) {
+        JTextArea requestText = new JTextArea(request.toString());
+        requestText.setWrapStyleWord(true);
+        requestText.setLineWrap(true);
+        requestText.setEditable(false);
+        requestText.setBackground(new Color(50, 50, 50));
+        requestText.setForeground(Color.WHITE);
+        requestText.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        requestText.setPreferredSize(new Dimension(500, 70));
 
-        boolean gotLooped = false;
-
-        for (Request request : dataStore.getRequests()) {
-            gotLooped = true;
-            JLabel requestLabel = new JLabel(dataStore.toString() + "/n");
-        }
-
-        if (!gotLooped) {
-
-            JLabel noRequestLabel = new JLabel("No hay solicitudes para mostrar");
-            noRequestLabel.setForeground(Color.WHITE);
-            GridBagConstraints gbc = new GridBagConstraints();
-            gbc.insets = new Insets(10, 10, 10, 10);
-            gbc.gridx = 0;
-            gbc.gridy = 0;
-            requestPanel.add(noRequestLabel, gbc);
-
-        }
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        requestPanel.add(btnReturn, gbc);
-
-        btnReturn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                setTitle("Interfaz de Administrador");
-                cardLayout.show(cardPanel, "Inicio");
-            }
-        });
-
-        return requestPanel;
+        requestPanel.add(requestText, gbc);
+        gbc.gridy++;
     }
+
+    requestPanel.setPreferredSize(new Dimension(500, gbc.gridy * 80));
+
+    JScrollPane scrollPane = new JScrollPane(requestPanel);
+    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+    scrollPane.getVerticalScrollBar().setUnitIncrement(16); 
+
+    JButton btnReturn = new JButton("Regresar");
+    btnReturn.setPreferredSize(new Dimension(150, 50));
+    btnReturn.setBackground(new Color(111, 54, 154));
+    btnReturn.setForeground(Color.WHITE);
+
+    JPanel bottomPanel = new JPanel();
+    bottomPanel.setBackground(Color.DARK_GRAY);
+    bottomPanel.add(btnReturn);
+
+    containerPanel.add(scrollPane, BorderLayout.CENTER);
+    containerPanel.add(bottomPanel, BorderLayout.SOUTH);
+
+    btnReturn.addActionListener(e -> {
+        setTitle("Interfaz de Administrador");
+        cardLayout.show(cardPanel, "Inicio");
+    });
+
+    return containerPanel;
+}
+
 
 }
