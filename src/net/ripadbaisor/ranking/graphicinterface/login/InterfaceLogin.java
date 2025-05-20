@@ -6,6 +6,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 import net.ripadbaisor.ranking.graphicinterface.usersinterface.AdminInterface;
+import net.ripadbaisor.ranking.graphicinterface.usersinterface.ClientInterface;
 import net.ripadbaisor.ranking.programdata.DataStore;
 import net.ripadbaisor.ranking.programdata.userAccounts.Credentials;
 
@@ -259,9 +260,8 @@ public class InterfaceLogin extends JFrame {
                                 textUser.setText("");
                                 textPassword.setText("");
 
-                                System.out.println("funciona");
-
-                                errorLabel.setVisible(false);
+                                dispose();
+                                new ClientInterface(dataStore);
 
                             } else {
 
