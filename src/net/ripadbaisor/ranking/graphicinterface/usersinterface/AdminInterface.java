@@ -1,8 +1,12 @@
 package net.ripadbaisor.ranking.graphicinterface.usersinterface;
 
 import javax.swing.*;
+import javax.swing.text.DateFormatter;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 import net.ripadbaisor.ranking.graphicinterface.login.InterfaceLogin;
 import net.ripadbaisor.ranking.programdata.DataStore;
@@ -31,11 +35,11 @@ public class AdminInterface extends JFrame {
 
         JPanel requestPanel = createRequestPanel();
 
-        // JPanel videogameAdderPanel = createVideogameAdderPanel("VideogameAdder");
+        JPanel videogameAdderPanel = createVideogameAdderPanel();
 
         cardPanel.add(initialPanel, "Inicio");
         cardPanel.add(requestPanel, "request");
-        // cardPanel.add(videogameAdderPanel, "videogameAdder");
+        cardPanel.add(videogameAdderPanel, "videogameAdder");
 
         add(cardPanel, BorderLayout.CENTER);
 
@@ -90,9 +94,18 @@ public class AdminInterface extends JFrame {
             }
         });
 
+        btnAddVideogames.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                setTitle("Añadir Videojuego");
+                cardLayout.show(cardPanel, "videogameAdder");
+
+            }
+        });
+
         btnLogOut.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                
+
                 dispose();
 
                 new InterfaceLogin(dataStore);
@@ -138,7 +151,7 @@ public class AdminInterface extends JFrame {
         }
 
         if (!gotLooped) {
-            
+
             JLabel noRequestsLabel = new JLabel("No hay solicitudes a mostrar");
             noRequestsLabel.setForeground(Color.WHITE);
             requestPanel.add(noRequestsLabel);
@@ -173,8 +186,141 @@ public class AdminInterface extends JFrame {
         return containerPanel;
     }
 
+    private JPanel createVideogameAdderPanel() {
 
+        JPanel adderPanel = new JPanel();
+        adderPanel.setLayout(new GridBagLayout());
 
+        adderPanel.setBackground(Color.DARK_GRAY);
 
+        JLabel labelAddVideogame = new JLabel("Añadir un Videojuego");
+        JLabel labelName = new JLabel("Nombre:");
+        JTextField textName = new JTextField();
+        JLabel labelReleaseDate = new JLabel("Fecha de salida:");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormatter dateFormatter = new DateFormatter(dateFormat);
+        JFormattedTextField textReleaseDate = new JFormattedTextField(dateFormatter);
+        JButton btnAdd = new JButton("<html>Añadir<br/> Videojuego</html>");
+        JButton btnReturn = new JButton("Regresar");
+        JLabel errorLabel = new JLabel("<html>Error al registrar el videojuego, la fecha no es correcta.<br /> No debe estar vacia y su formato es dd/mm/aaaa </html>");
+        JLabel errorLabelTwo = new JLabel("Error al registrar el videojuego, el videojuego ya existe");
+
+        labelAddVideogame.setForeground(Color.WHITE);
+        labelName.setForeground(Color.WHITE);
+        labelReleaseDate.setForeground(Color.WHITE);
+        textName.setPreferredSize(new Dimension(180, 30));
+        textReleaseDate.setPreferredSize(new Dimension(180, 30));
+        btnAdd.setPreferredSize(new Dimension(120, 50));
+        btnAdd.setBackground(new Color(111, 54, 154));
+        btnAdd.setForeground(Color.WHITE);
+        btnReturn.setPreferredSize(new Dimension(120, 50));
+        btnReturn.setBackground(new Color(111, 54, 154));
+        btnReturn.setForeground(Color.WHITE);
+        errorLabel.setForeground(Color.RED);
+        errorLabel.setVisible(false);
+        errorLabelTwo.setForeground(Color.RED);
+        errorLabelTwo.setVisible(false);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        GridBagConstraints gbcTwo = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbcTwo.insets = new Insets(10, 10, 30, -180);
+        gbcTwo.gridx = 0;
+        gbcTwo.gridy = 0;
+        adderPanel.add(labelAddVideogame, gbcTwo);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        adderPanel.add(labelName, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        adderPanel.add(textName, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        adderPanel.add(labelReleaseDate, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        adderPanel.add(textReleaseDate, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        adderPanel.add(btnAdd, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        adderPanel.add(btnReturn, gbc);
+        gbc.insets = new Insets(10, -120, 10, 10);
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        adderPanel.add(errorLabel, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        adderPanel.add(errorLabelTwo, gbc);
+
+        btnReturn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                errorLabel.setVisible(false);
+                setTitle("Interfaz de Administrador");
+                cardLayout.show(cardPanel, "Inicio");
+            }
+        });
+
+        btnAdd.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                errorLabel.setVisible(false);
+                errorLabelTwo.setVisible(false);
+                String name = "";
+                String releaseDateString = "";
+
+                try {
+
+                    name = textName.getText();
+                    releaseDateString = textReleaseDate.getText();
+
+                    textName.setText("");
+                    textReleaseDate.setText("");
+
+                    if (name.isEmpty() || releaseDateString.isEmpty()) {
+
+                        errorLabel.setVisible(true);
+
+                    } else {
+
+                        boolean isAlreadyAdded = false;
+
+                        Date releaseDate = (Date) textReleaseDate.getValue();
+
+                        for (int i = 0; i < dataStore.getVideogames().size(); i++) {
+                            if (name.equals(dataStore.getVideogames().get(i).getName())) {
+
+                                isAlreadyAdded = true;
+
+                                errorLabelTwo.setVisible(true);
+
+                            }
+                        }
+
+                        if (!isAlreadyAdded) {
+
+                            dataStore.addVideogame(new Videogame(name, releaseDate));
+
+                            errorLabel.setVisible(false);
+
+                        }
+
+                    }
+
+                } catch (Exception excep) {
+
+                    errorLabel.setVisible(true);
+
+                    textName.setText("");
+                    textReleaseDate.setText("");
+
+                }
+
+            }
+        });
+
+        return adderPanel;
+    }
 
 }
