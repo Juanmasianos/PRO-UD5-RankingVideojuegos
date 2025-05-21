@@ -9,20 +9,18 @@ public class Videogame {
 
     private String name;
     private Date launchDate;
-    private ArrayList<Float> graphicsScore;
-    private ArrayList<Float> gameplayScore;
-    private ArrayList<Float> optimizationScore;
-    private ArrayList<Float> storyScore;
+    private ArrayList<Float> graphicsScore = new ArrayList<Float>();
+    private ArrayList<Float> gameplayScore = new ArrayList<Float>();
+    private ArrayList<Float> optimizationScore = new ArrayList<Float>();
+    private ArrayList<Float> storyScore = new ArrayList<Float>();
     private Float finalScore;
+    private boolean isRated;
 
     public Videogame(String name, Date launchDate) {
         this.name = name;
         this.launchDate = launchDate;
 
-        this.graphicsScore.add(0f);
-        this.gameplayScore.add(0f);
-        this.optimizationScore.add(0f);
-        this.storyScore.add(0f);
+        setFinalScore();
     }
 
     public String getName() {
@@ -63,6 +61,10 @@ public class Videogame {
     }
 
     public void setGraphicsScore(Float graphicsScore) {
+        if (graphicsScore > 0) {
+            this.isRated = true;
+        }
+
         this.graphicsScore.add(graphicsScore);
     }
 
@@ -79,6 +81,10 @@ public class Videogame {
     }
 
     public void setGameplayScore(Float gameplayScore) {
+        if (gameplayScore > 0) {
+            this.isRated = true;
+        }
+
         this.gameplayScore.add(gameplayScore);
     }
 
@@ -95,6 +101,10 @@ public class Videogame {
     }
 
     public void setOptimizationScore(Float optimizationScore) {
+        if (optimizationScore > 0) {
+            this.isRated = true;
+        }
+
         this.optimizationScore.add(optimizationScore);
     }
 
@@ -111,6 +121,9 @@ public class Videogame {
     }
 
     public void setStoryScore(Float storyScore) {
+        if (storyScore > 0) {
+            this.isRated = true;
+        }
         
         this.storyScore.add(storyScore);
     }
@@ -119,9 +132,16 @@ public class Videogame {
         return finalScore;
     }
 
-    public void setFinalScore(Float finalScore) {
-        this.finalScore = (this.getGraphicsScore() + this.getGameplayScore() +
+    public void setFinalScore() {
+
+        if (isRated) {
+            this.finalScore = (this.getGraphicsScore() + this.getGameplayScore() +
                             this.getOptimizationScore() + this.getStoryScore()) / 4;
+        } else {
+
+            this.finalScore = 0f;
+
+        }
     }
 
 }

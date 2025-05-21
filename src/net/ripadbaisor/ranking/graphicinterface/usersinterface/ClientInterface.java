@@ -27,7 +27,7 @@ public class ClientInterface extends JFrame {
         this.username = logedUser;
 
         setTitle("Interfaz de cliente");
-        setSize(600, 400);
+        setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         cardLayout = new CardLayout();
@@ -88,7 +88,7 @@ public class ClientInterface extends JFrame {
         btnShowList.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                JPanel videogameListPanel = CreateVideogameLister();
+                JPanel videogameListPanel = createVideogameListerPanel();
 
                 cardPanel.add(videogameListPanel, "videogameLister");
 
@@ -197,7 +197,7 @@ public class ClientInterface extends JFrame {
 
     }
 
-    private JPanel CreateVideogameLister() {
+    private JPanel createVideogameListerPanel() {
 
         JPanel containerPanel = new JPanel(new BorderLayout());
         containerPanel.setBackground(Color.DARK_GRAY);
@@ -219,11 +219,12 @@ public class ClientInterface extends JFrame {
 
             gotLooped = true;
 
-            JButton btnVideogame = new JButton(videogame.getName());
+            JButton btnVideogame = new JButton("<html><div style=\"text-align: center;\">" + videogame.getName() + "<br />" +
+                                                "Puntuacion Total: " + videogame.getFinalScore() + "</div></html>");
             btnVideogame.setBackground(new Color(111, 54, 154));
             btnVideogame.setForeground(Color.WHITE);
             btnVideogame.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-            btnVideogame.setPreferredSize(new Dimension(220, 50));
+            btnVideogame.setPreferredSize(new Dimension(220, 70));
 
             btnVideogame.addActionListener(e -> {
 
@@ -285,8 +286,180 @@ public class ClientInterface extends JFrame {
 
     private JPanel createVideogameScorer(Videogame videogame) {
 
-        return new JPanel();
+        JPanel scorerPanel = new JPanel();
+        scorerPanel.setLayout(new GridBagLayout());
 
-    }
+        scorerPanel.setBackground(Color.DARK_GRAY);
+
+        JLabel labelScorer = new JLabel("<html>Puntuando: " + videogame.getName()
+                + "<br />Fecha de salida: " + videogame.getLaunchDateFormatted() 
+                + "<br />Puntuacion total actual: " + videogame.getFinalScore()
+                + "<br />Los valores deben estar entre 1 y 100");
+        JLabel labelGraphicScore = new JLabel("Puntuacion de los gráficos: ");
+        JTextField textGraphicScore = new JTextField();
+        JLabel labelGameplayScore = new JLabel("Puntuacion del gameplay: ");
+        JTextField textGameplayScore = new JTextField();
+        JLabel labelOptimizationScore = new JLabel("Puntuacion de la optimizacion: ");
+        JTextField textOptimizationScore = new JTextField();
+        JLabel labelStoryScore = new JLabel("Puntuacion de la historia: ");
+        JTextField textStoryScore = new JTextField();
+        JButton btnScore = new JButton("<html>Confirmar<br/> puntuacion</html>");
+        JButton btnReturn = new JButton("Regresar");
+        JLabel errorLabel = new JLabel("Error: No puede haber ningun campo vacío");
+        JLabel errorLabelTwo = new JLabel("Error: Algun campo no tiene valores numéricos");
+        JLabel errorLabelThree = new JLabel("Error: Algun campo no tiene valores entre los especificados");
+
+        labelScorer.setForeground(Color.WHITE);
+        labelGraphicScore.setForeground(Color.WHITE);
+        labelGameplayScore.setForeground(Color.WHITE);
+        labelOptimizationScore.setForeground(Color.WHITE);
+        labelStoryScore.setForeground(Color.WHITE);
+        btnScore.setForeground(Color.WHITE);
+        textGraphicScore.setPreferredSize(new Dimension(180, 30));
+        textGameplayScore.setPreferredSize(new Dimension(180, 30));
+        textOptimizationScore.setPreferredSize(new Dimension(180, 30));
+        textStoryScore.setPreferredSize(new Dimension(180, 30));
+        btnScore.setPreferredSize(new Dimension(120, 50));
+        btnScore.setBackground(new Color(111, 54, 154));
+        btnScore.setForeground(Color.WHITE);
+        btnReturn.setPreferredSize(new Dimension(120, 50));
+        btnReturn.setBackground(new Color(111, 54, 154));
+        btnReturn.setForeground(Color.WHITE);
+        errorLabel.setForeground(Color.RED);
+        errorLabel.setVisible(false);
+        errorLabelTwo.setForeground(Color.RED);
+        errorLabelTwo.setVisible(false);
+        errorLabelThree.setForeground(Color.RED);
+        errorLabelThree.setVisible(false);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        GridBagConstraints gbcTwo = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbcTwo.insets = new Insets(10, 10, 30, -180);
+        gbcTwo.gridx = 0;
+        gbcTwo.gridy = 0;
+        scorerPanel.add(labelScorer, gbcTwo);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        scorerPanel.add(labelGraphicScore, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        scorerPanel.add(textGraphicScore, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        scorerPanel.add(labelGameplayScore, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        scorerPanel.add(textGameplayScore, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        scorerPanel.add(labelOptimizationScore, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        scorerPanel.add(textOptimizationScore, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        scorerPanel.add(labelStoryScore, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        scorerPanel.add(textStoryScore, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        scorerPanel.add(btnScore, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 6;
+        scorerPanel.add(btnReturn, gbc);
+        gbc.insets = new Insets(10, -120, 10, 10);
+        gbc.gridx = 1;
+        gbc.gridy = 7;
+        scorerPanel.add(errorLabel, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 7;
+        scorerPanel.add(errorLabelTwo, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 7;
+        scorerPanel.add(errorLabelThree, gbc);
+
+        btnReturn.addActionListener(e -> {
+
+            JPanel videogameListPanel = createVideogameListerPanel();
+
+            cardPanel.add(videogameListPanel, "videogameLister");
+
+            setTitle("Interfaz de Administrador");
+            cardLayout.show(cardPanel, "videogameLister");
+
+        });
+
+        btnScore.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                errorLabel.setVisible(false);
+                errorLabelTwo.setVisible(false);
+                errorLabelThree.setVisible(false);
+                String stringGraphicScore;
+                String stringGameplayScore;
+                String stringOptimizationScore;
+                String stringStoryScore;
+
+                try {
+
+                    stringGraphicScore = textGraphicScore.getText();
+                    stringGameplayScore = textGameplayScore.getText();
+                    stringOptimizationScore = textOptimizationScore.getText();
+                    stringStoryScore = textStoryScore.getText();
+
+                    textGraphicScore.setText("");
+                    textGameplayScore.setText("");
+                    textOptimizationScore.setText("");
+                    textStoryScore.setText("");
+
+                    if (stringGraphicScore.isEmpty() || stringGameplayScore.isEmpty() || stringOptimizationScore.isEmpty() || stringStoryScore.isEmpty()) {
+
+                        errorLabel.setVisible(true);
+
+                    } else {
+
+                        float graphicScore = Float.parseFloat(stringGraphicScore);
+                        float gameplayScore = Float.parseFloat(stringGameplayScore);
+                        float optimizationScore = Float.parseFloat(stringOptimizationScore);
+                        float storyScore = Float.parseFloat(stringStoryScore);
+
+                        if ((graphicScore > 100 || graphicScore < 1) ||
+                            (gameplayScore > 100 || gameplayScore < 1) ||
+                            (optimizationScore > 100 || optimizationScore < 1) ||
+                            (storyScore > 100 || storyScore < 1)) {
+
+                                errorLabelThree.setVisible(true);
+                            
+                        } else {
+
+                            videogame.setGraphicsScore(graphicScore);
+                            videogame.setGameplayScore(gameplayScore);
+                            videogame.setOptimizationScore(optimizationScore);
+                            videogame.setStoryScore(storyScore);
+                            videogame.setFinalScore();
+
+                        }
+
+                    }
+
+                } catch (Exception excep) {
+
+                    errorLabelTwo.setVisible(true);
+                    
+                    textGraphicScore.setText("");
+                    textGameplayScore.setText("");
+                    textOptimizationScore.setText("");
+                    textStoryScore.setText("");
+
+                }
+
+            }
+        });
+
+    return scorerPanel;
+
+}
 
 }
