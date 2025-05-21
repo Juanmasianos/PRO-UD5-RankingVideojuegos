@@ -261,7 +261,7 @@ public class InterfaceLogin extends JFrame {
                                 textPassword.setText("");
 
                                 dispose();
-                                new ClientInterface(dataStore);
+                                new ClientInterface(dataStore, dataStore.getCredentialsList().get(i).getUsername());
 
                             } else {
 
