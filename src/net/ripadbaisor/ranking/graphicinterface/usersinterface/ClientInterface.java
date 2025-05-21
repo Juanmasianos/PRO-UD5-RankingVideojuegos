@@ -199,6 +199,92 @@ public class ClientInterface extends JFrame {
 
     private JPanel CreateVideogameLister() {
 
+        JPanel containerPanel = new JPanel(new BorderLayout());
+        containerPanel.setBackground(Color.DARK_GRAY);
+
+        JPanel listPanel = new JPanel();
+        listPanel.setLayout(new GridBagLayout());
+
+        listPanel.setBackground(Color.DARK_GRAY);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+
+        boolean gotLooped = false;
+
+        for (Videogame videogame : dataStore.getVideogames()) {
+
+            gotLooped = true;
+
+            JButton btnVideogame = new JButton(videogame.getName());
+            btnVideogame.setBackground(new Color(111, 54, 154));
+            btnVideogame.setForeground(Color.WHITE);
+            btnVideogame.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+            btnVideogame.setPreferredSize(new Dimension(220, 50));
+
+            btnVideogame.addActionListener(e -> {
+
+                JPanel videogameScorerPanel = createVideogameScorer(videogame);
+
+                cardPanel.add(videogameScorerPanel, "videogameScorer");
+
+                setTitle("Puntaje de juego");
+                cardLayout.show(cardPanel, "videogameScorer");
+            });
+
+            listPanel.add(btnVideogame, gbc);
+
+            gbc.gridx++;
+
+            if (gbc.gridx == 2) {
+                gbc.gridx = 0;
+                gbc.gridy++;
+            }
+
+        }
+
+        if (!gotLooped) {
+
+            JLabel noVideogamesLabel = new JLabel("No hay videojuegos a mostrar");
+            noVideogamesLabel.setForeground(Color.WHITE);
+            listPanel.add(noVideogamesLabel);
+
+        }
+
+        listPanel.setPreferredSize(new Dimension(500, gbc.gridy * 80));
+
+        JScrollPane scrollPane = new JScrollPane(listPanel);
+        scrollPane.setBackground(Color.DARK_GRAY);
+        scrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+
+        JButton btnReturn = new JButton("Regresar");
+        btnReturn.setPreferredSize(new Dimension(150, 50));
+        btnReturn.setBackground(new Color(111, 54, 154));
+        btnReturn.setForeground(Color.WHITE);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setBackground(Color.DARK_GRAY);
+        bottomPanel.add(btnReturn);
+
+        containerPanel.add(scrollPane, BorderLayout.CENTER);
+        containerPanel.add(bottomPanel, BorderLayout.SOUTH);
+
+        btnReturn.addActionListener(e -> {
+            setTitle("Interfaz de cliente");
+            cardLayout.show(cardPanel, "Inicio");
+        });
+
+        return containerPanel;
+
+    }
+
+    private JPanel createVideogameScorer(Videogame videogame) {
+
         return new JPanel();
 
     }
