@@ -2,22 +2,27 @@ package net.ripadbaisor.ranking.videogame;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import java.util.ArrayList;
 import javax.swing.text.DateFormatter;
 
 public class Videogame {
 
     private String name;
     private Date launchDate;
-    private float graphicsScore;
-    private float gameplayScore;
-    private float optimizationScore;
-    private float storyScore;
-    private float finalScore;
+    private ArrayList<Float> graphicsScore;
+    private ArrayList<Float> gameplayScore;
+    private ArrayList<Float> optimizationScore;
+    private ArrayList<Float> storyScore;
+    private Float finalScore;
 
     public Videogame(String name, Date launchDate) {
         this.name = name;
         this.launchDate = launchDate;
+
+        this.graphicsScore.add(0f);
+        this.gameplayScore.add(0f);
+        this.optimizationScore.add(0f);
+        this.storyScore.add(0f);
     }
 
     public String getName() {
@@ -45,43 +50,78 @@ public class Videogame {
     }
 
     public float getGraphicsScore() {
-        return graphicsScore;
+
+        Float totalScores = 0f;
+
+        for (int i = 0; i < graphicsScore.size(); i++) {
+            
+            totalScores += graphicsScore.get(i);
+
+        }
+
+        return totalScores / graphicsScore.size();
     }
 
-    public void setGraphicsScore(float graphicsScore) {
-        this.graphicsScore = graphicsScore;
+    public void setGraphicsScore(Float graphicsScore) {
+        this.graphicsScore.add(graphicsScore);
     }
 
     public float getGameplayScore() {
-        return gameplayScore;
+                Float totalScores = 0f;
+
+        for (int i = 0; i < gameplayScore.size(); i++) {
+            
+            totalScores += gameplayScore.get(i);
+
+        }
+
+        return totalScores / gameplayScore.size();
     }
 
-    public void setGameplayScore(float gameplayScore) {
-        this.gameplayScore = gameplayScore;
+    public void setGameplayScore(Float gameplayScore) {
+        this.gameplayScore.add(gameplayScore);
     }
 
     public float getOptimizationScore() {
-        return optimizationScore;
+                Float totalScores = 0f;
+
+        for (int i = 0; i < optimizationScore.size(); i++) {
+            
+            totalScores += optimizationScore.get(i);
+
+        }
+
+        return totalScores / optimizationScore.size();
     }
 
-    public void setOptimizationScore(float optimizationScore) {
-        this.optimizationScore = optimizationScore;
+    public void setOptimizationScore(Float optimizationScore) {
+        this.optimizationScore.add(optimizationScore);
     }
 
     public float getStoryScore() {
-        return storyScore;
+        Float totalScores = 0f;
+
+        for (int i = 0; i < storyScore.size(); i++) {
+            
+            totalScores += storyScore.get(i);
+
+        }
+
+        return totalScores / storyScore.size();
     }
 
-    public void setStoryScore(float storyScore) {
-        this.storyScore = storyScore;
+    public void setStoryScore(Float storyScore) {
+        
+        this.storyScore.add(storyScore);
     }
 
     public float getFinalScore() {
         return finalScore;
     }
 
-    public void setFinalScore(float finalScore) {
-        this.finalScore = finalScore;
+    public void setFinalScore(Float finalScore) {
+        this.finalScore = (this.getGraphicsScore() + this.getGameplayScore() +
+                            this.getOptimizationScore() + this.getStoryScore()) / 4;
     }
 
 }
